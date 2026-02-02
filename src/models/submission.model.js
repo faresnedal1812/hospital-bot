@@ -13,7 +13,7 @@ const submissionSchema = new mongoose.Schema(
     },
     submittedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Department",
+      ref: "User",
       required: true,
     },
     /*
