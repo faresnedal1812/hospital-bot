@@ -18,7 +18,8 @@ const hasSubmittedToday = async (departmentId) => {
 
     return count > 0;
   } catch (error) {
-    console.log(error.message);
+    console.log("hasSubmittedToday error:", error.message);
+    throw error;
   }
 };
 
@@ -27,18 +28,17 @@ const createSubmission = async (userId, departmentId, data) => {
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
 
-    const newSubmission = new Submission({
+    const newSubmission = await new Submission({
       date: startOfDay,
       department: departmentId,
       submittedBy: userId,
       data,
-    })
-      .populate("department")
-      .populate("submittedBy");
+    }).save();
 
-    return await newSubmission.save();
+    return await newSubmission.populate(["department", "submittedBy"]);
   } catch (error) {
-    console.log(error.message);
+    console.log("createSubmission error:", error.message);
+    throw error;
   }
 };
 
@@ -57,11 +57,12 @@ const getDailySubmission = async () => {
       },
     })
       .populate("department")
-      .populate("submittedBys");
+      .populate("submittedBy");
 
     return submissions;
   } catch (error) {
-    console.log(error.message);
+    console.log("getDailySubmission error:", error.message);
+    throw error;
   }
 };
 
