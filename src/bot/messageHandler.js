@@ -58,7 +58,7 @@ const handleMessage = async (msg) => {
     }
 
     if (body === "!status") {
-      const submitted = submissionService.hasSubmittedToday(
+      const submitted = await submissionService.hasSubmittedToday(
         user.department._id,
       );
       if (submitted) {
@@ -100,7 +100,7 @@ const handleMessage = async (msg) => {
       }
     }
 
-    if (bode === "!bing") {
+    if (body === "!ping") {
       await msg.reply("🏓 pong");
       return;
     }
