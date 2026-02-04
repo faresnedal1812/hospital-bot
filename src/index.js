@@ -1,10 +1,13 @@
 require("dotenv").config({ quiet: true });
 const express = require("express");
 const connectDB = require("./config/connectDB");
+const client = require("./bot/client");
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+
+client.initialize();
 
 const startServer = async () => {
   try {
