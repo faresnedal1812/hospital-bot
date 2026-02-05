@@ -2,6 +2,7 @@ const User = require("../models/user.model");
 const sessionManager = require("../services/sessionManager");
 const submissionService = require("../services/submissionService");
 const Setting = require("../models/setting.model");
+const { checkAndSendReport } = require("../jobs/scheduler");
 
 const handleMessage = async (msg) => {
   try {

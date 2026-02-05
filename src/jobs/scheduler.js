@@ -32,7 +32,7 @@ const initScheduleJobs = () => {
       }
 
       if (missing.length > 0) {
-        let message = `⏰ *Daily Statistics Reminder*\n\nThe following departments hav NOT submitted yet:\n`;
+        let message = `⏰ *Daily Statistics Reminder*\n\nThe following departments have NOT submitted yet:\n`;
 
         for (const dept of missing) {
           message += `- *${dept.name}*\n`;
