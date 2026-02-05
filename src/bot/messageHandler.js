@@ -24,7 +24,7 @@ const handleMessage = async (msg) => {
     }
 
     // 2. Check Active Session
-    const session = sessionManager.getSession(user._id);
+    const session = sessionManager.getSession(user._id.toString());
     if (session) {
       await handleSessionInput(msg, user, session);
       return;
@@ -33,12 +33,12 @@ const handleMessage = async (msg) => {
     // 3. Command Handling
     const body = msg.body.trim().toLowerCase();
 
-    if (!user.department) {
-      await msg.reply("❌ You are not assigned to any department.");
-      return;
-    }
-
     if (body === "!submit") {
+      if (!user.department) {
+        await msg.reply("❌ You are not assigned to any department.");
+        return;
+      }
+
       const alreadySubmitted = await submissionService.hasSubmittedToday(
         user.department._id,
       );
@@ -49,7 +49,7 @@ const handleMessage = async (msg) => {
         return;
       }
 
-      sessionManager.createSession(user._id, user.department);
+      sessionManager.createSession(user._id.toString(), user.department);
       const firstMetric = user.department.metrics[0];
 
       await msg.reply(
@@ -59,6 +59,11 @@ const handleMessage = async (msg) => {
     }
 
     if (body === "!status") {
+      if (!user.department) {
+        await msg.reply("❌ You are not assigned to any department.");
+        return;
+      }
+
       const submitted = await submissionService.hasSubmittedToday(
         user.department._id,
       );
@@ -115,7 +120,7 @@ const handleSessionInput = async (msg, user, session) => {
 
   // Check for cancellation
   if (body === "!cancel") {
-    sessionManager.clearSession(user._id);
+    sessionManager.clearSession(user._id.toString());
     await msg.reply("❌ Submission cancelled");
     return;
   }
@@ -129,7 +134,7 @@ const handleSessionInput = async (msg, user, session) => {
           user.department._id,
           session.data,
         );
-        sessionManager.clearSession(user._id);
+        sessionManager.clearSession(user._id.toString());
         await msg.reply(
           `✅ Statistics for *${user.department.name}* have been saved successfully!`,
         );
@@ -173,7 +178,7 @@ const handleSessionInput = async (msg, user, session) => {
     });
     summary += `\n Type *!confirm* to save or *!cancel* to discard.`;
 
-    sessionManager.updateSession(user._id, { step: "CONFIRM" });
+    sessionManager.updateSession(user._id.toString(), { step: "CONFIRM" });
     await msg.reply(summary);
   }
 };
