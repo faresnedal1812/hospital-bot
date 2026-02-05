@@ -95,7 +95,7 @@ const handleMessage = async (msg) => {
 
       if (body === "!forcereport") {
         await msg.reply("⏳ Generating report...");
-        // todo: await checkAndSendReport(true); // checkAndSendReport handles sending the file
+        await checkAndSendReport(true); // checkAndSendReport handles sending the file
         return;
       }
     }
@@ -134,7 +134,7 @@ const handleSessionInput = async (msg, user, session) => {
         );
 
         // Check if all submitted to send report automatically
-        // todo: await checkAndSendReport(false);
+        await checkAndSendReport(false);
       } catch (error) {
         console.error(error.message);
         await msg.reply("❌ Error saving data. Please try again");
