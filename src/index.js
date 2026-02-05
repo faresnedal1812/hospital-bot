@@ -16,6 +16,8 @@ app.get("/", (req, res) => {
 client.initialize();
 initScheduleJobs();
 
+client.on("message_create", handleMessage);
+
 const startServer = async () => {
   try {
     await connectDB();
