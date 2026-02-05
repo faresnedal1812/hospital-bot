@@ -2,6 +2,7 @@ const User = require("../models/user.model");
 const sessionManager = require("../services/sessionManager");
 const submissionService = require("../services/submissionService");
 const Setting = require("../models/setting.model");
+const { checkAndSendReport } = require("../jobs/scheduler");
 
 const handleMessage = async (msg) => {
   try {
@@ -95,7 +96,7 @@ const handleMessage = async (msg) => {
 
       if (body === "!forcereport") {
         await msg.reply("⏳ Generating report...");
-        // todo: await checkAndSendReport(true); // checkAndSendReport handles sending the file
+        await checkAndSendReport(true); // checkAndSendReport handles sending the file
         return;
       }
     }
@@ -134,7 +135,7 @@ const handleSessionInput = async (msg, user, session) => {
         );
 
         // Check if all submitted to send report automatically
-        // todo: await checkAndSendReport(false);
+        await checkAndSendReport(false);
       } catch (error) {
         console.error(error.message);
         await msg.reply("❌ Error saving data. Please try again");
